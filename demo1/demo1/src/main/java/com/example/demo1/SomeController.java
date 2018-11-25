@@ -1,13 +1,27 @@
 package com.example.demo1;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class SomeController {
     @GetMapping(value="/")
-    public String test(){
+    public String start_page(){
+        return "index";
+    }
 
-        return "It works!";
+    @GetMapping(value="/index")
+    public String index_page(){
+        return "index";
+    }
+
+    @GetMapping(value="/prediction")
+    public String prediction_page(){
+        return "prediction";
+    }
+
+    @GetMapping(value="/instruments")
+    public String instruments_page(){
+        return "instruments";
     }
 }
