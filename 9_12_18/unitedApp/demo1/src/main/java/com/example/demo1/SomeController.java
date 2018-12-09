@@ -3,6 +3,9 @@ package com.example.demo1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class SomeController {
@@ -27,5 +30,12 @@ public class SomeController {
     @GetMapping(value="/instruments")
     public String instruments_page(){
         return "instruments";
+    }
+
+    @RequestMapping (value ="/update", method = RequestMethod.POST)//для кнопки обновить данные
+    public void update_data(@RequestBody SessionRequest params)
+    {
+        System.out.println(params.getCategory());
+        System.out.println(params.getPeriod());
     }
 }
