@@ -33,9 +33,10 @@ public class SomeController {
     }
 
     @RequestMapping (value ="/update", method = RequestMethod.POST)//для кнопки обновить данные
-    public void update_data(@RequestBody SessionRequest params)
+    public String update_data(@RequestBody SessionRequest params)
     {
         System.out.println(params.getCategory());
         System.out.println(params.getPeriod());
+        return "index";
     }
 }
