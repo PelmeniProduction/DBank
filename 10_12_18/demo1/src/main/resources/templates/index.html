@@ -49,27 +49,12 @@
 			<select class="form-control">
 				<option>Золото</option>
 				<option>Нефть</option>
-				<option>Биткоин</option>
 			</select>
+
 			<br/>
 			<p>Выберете интересующий вас период времени:</p>
-			<div class="custom-control custom-radio">
-				<input type="radio" class="custom-control-input" id="defaultUnchecked" name="defaultExampleRadios">
-				<label class="custom-control-label" for="defaultUnchecked">За последний год</label>
-			</div>
-			<div class="custom-control custom-radio">
-				<input type="radio" class="custom-control-input" id="defaultUnchecked2" name="defaultExampleRadios">
-				<label class="custom-control-label" for="defaultUnchecked2">За последний месяц</label>
-			</div>
-			<!-- Default checked -->
-			<div class="custom-control custom-radio">
-				<input type="radio" class="custom-control-input" id="defaultChecked" name="defaultExampleRadios" checked>
-				<label class="custom-control-label" for="defaultChecked">За последние 2 недели</label>
-			</div>
-			<br/>
-
 			<!--Date Range Picker-->
-			<input type="text" data-range="true" data-multiple-dates-separator=" - " class="datepicker-here"/>
+			<input type="text" data-range="true" data-multiple-dates-separator=" - " class="datepicker-here" id="DRP1"/>
 			<br /><br />
 
 			<!--Кнопка-->
@@ -164,7 +149,7 @@
 		<script th:src="@{/js/jquery-3.3.1.js}"></script>
 		<!--Script - обработчик событий для кнопок-->
 		<script th:src="@{/js/index.js}"></script>
-
+		<!--script for Date range picker-->
         <script th:src="@{/dp/js/datepicker.min.js}"></script>
 
 
