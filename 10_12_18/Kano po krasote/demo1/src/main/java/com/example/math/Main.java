@@ -43,10 +43,10 @@ public class Main{
                 stmt.close();
                 c.close();*/
                 //на мужчину
-                /*DataCrawler dataCrawler= new DataCrawler();
-                dataCrawler.reloadData();*/
+                DataCrawler dataCrawler= new DataCrawler();
+                dataCrawler.reloadData();
 
-                //получаем данные из инета в массив
+                /*//получаем данные из инета в массив
                 Date start=new Date(118,8,1);
                 Date end=new Date(118,10,10);
                 arTsd=DataBase.getListFromDate(c,stmt,start, end);
@@ -72,7 +72,7 @@ public class Main{
 
                 c.commit();
                 stmt.close();
-                c.close();
+                c.close();*/
             } catch (Exception e) {
                 e.printStackTrace();
                 System.err.println(e.getClass().getName()+": "+e.getMessage());
