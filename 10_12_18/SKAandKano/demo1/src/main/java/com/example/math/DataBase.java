@@ -110,7 +110,7 @@ public class DataBase {
         }
         return dLastDate;
     }
-    public static ArrayList<TimeSeriesData> getListFromDate(Connection c,Statement stmt, Date start,Date end){
+        public static ArrayList<TimeSeriesData> getListFromDate(Connection c,Statement stmt, Date start,Date end){
         ArrayList<TimeSeriesData> arTsd = new ArrayList<>();
         /**/
 
