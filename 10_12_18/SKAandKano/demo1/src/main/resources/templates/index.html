@@ -61,7 +61,7 @@
 			<input type="submit" class="btn btn-primary" id="update_data" value="Обновить данные">
 
 			<!--График-->
-			<div class="row">
+			<div class="row" id="chartOne">
 				<main role="main" class="col-md-12 ml-sm-auto col-lg-12">
 					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 						<h1 class="h2">Курс золота (руб/гр.)</h1>
@@ -155,7 +155,7 @@
 
 		<!-- Graphs -->
 		<script th:src="@{/graph/Chart.min.js}"></script>
-		<!--<script>
+		<script>
 			var ctx = document.getElementById("myChart");
 			var myChart = new Chart(ctx, {
 				type: 'line',
@@ -183,6 +183,6 @@
 					}
 				}
 			});
-		</script>-->
+		</script>
 	</body>
 </html>
