@@ -85,7 +85,8 @@ public class AnalyticService {
     private static ArrayList<Double> arGetEMA(ArrayList<TimeSeriesData> cachedData){
         ArrayList<Double> arEMA = new ArrayList<Double>();
         int n=cachedData.size();
-        Double alpha=2/(1+(double)n);
+        //Double alpha=2/(1+(double)n);
+        Double alpha=0.3;
         for (int i = 0; i < n; i++) {
             if(i==0)
                 arEMA.add(i,(cachedData.get(i).getPrice()*alpha)+(cachedData.get(i).getPrice()*(1-alpha)));
