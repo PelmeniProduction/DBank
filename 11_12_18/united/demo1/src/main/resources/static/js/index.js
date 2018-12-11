@@ -34,6 +34,16 @@ function getData() {
 }
 
 function amountOfCharts(returnArray){
+    var Select2 = document.querySelector(SELECT_CLASS);//присваиваем переменной выпадающее окно
+    //Меняем заголовок в зависимости от выбранной категории
+    if(Select2.options[Select2.selectedIndex].text === "Золото")
+    {
+        $("#graphTitle").text("Курс золота (руб./гр.)");
+    }
+    else if(Select2.options[Select2.selectedIndex].text === "Нефть")
+    {
+        $("#graphTitle").text("Курс нефти ($/барр. IPE)");
+    }
     //обновляем график полученными данными
     myChart.data.labels = returnArray.map(tsd => tsd.date);
     //проверяем какие чекбоксы отмечены
