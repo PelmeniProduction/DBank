@@ -23,9 +23,14 @@ function getData() {
         success: function (arrTSD) {
             //обновляем график полученными данными
             myChart.data.labels = arrTSD.map(tsd => tsd.date);
-            myChart.data.datasets.forEach((dataset) => {
+            myChart.data.datasets = [datasetOne, datasetTwo, datasetThree];
+            /*myChart.data.datasets.forEach((dataset) => {
                 dataset.data = arrTSD.map(tsd => tsd.price);
-            });
+            });*///так сказал сделать Михаил
+            myChart.data.datasets[0].data = arrTSD.map(tsd => tsd.price);
+            myChart.data.datasets[1].data = arrTSD.map(tsd => tsd.price/2);
+            myChart.data.datasets[2].data = arrTSD.map(tsd => tsd.price*2);//для трёх графиков
+
             myChart.update();
         },
         failure: function (errMsg) {

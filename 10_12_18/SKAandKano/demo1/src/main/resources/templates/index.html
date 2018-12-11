@@ -57,8 +57,10 @@
 			<input type="text" data-range="true" data-multiple-dates-separator=" - " class="datepicker-here" id="DRP1"/>
 			<br /><br />
 
-			<!--Кнопка-->
+			<!--Кнопки-->
 			<input type="submit" class="btn btn-primary" id="update_data" value="Обновить данные">
+            <input type="submit" class="btn btn-warning" value="Вывести фильтр Калмана">
+            <input type="submit" class="btn btn-success" value="Вывести EMA">
 
 			<!--График-->
 			<div class="row" id="chartOne">
@@ -157,18 +159,35 @@
 		<script th:src="@{/graph/Chart.min.js}"></script>
 		<script>
 			var ctx = document.getElementById("myChart");
+			var datasetOne ={
+                data: [2498.93, 2500.91, 2531.49, 2553.33, 2572.88, 2572.51, 2534.99, 2524.47, 2578.51, 2585.15],
+                lineTension: 0,
+                backgroundColor: 'transparent',
+                borderColor: '#007bff',
+                borderWidth: 4,
+                pointBackgroundColor: '#007bff'
+            };
+            var datasetTwo = {
+                data: [2498.93*2, 2500.91*2, 2531.49*2, 2553.33*2, 2572.88*2, 2572.51*2, 2534.99*2, 2524.47*2, 2578.51*2, 2585.15*2],
+                lineTension: 0,
+                backgroundColor: 'transparent',
+                borderColor: '#ffc300',
+                borderWidth: 4,
+                pointBackgroundColor: '#ffc300'
+            };
+            var datasetThree = {
+                data: [2498.93/2, 2500.91/2, 2531.49/2, 2553.33/2, 2572.88/2, 2572.51/2, 2534.99/2, 2524.47/2, 2578.51/2, 2585.15/2],
+                lineTension: 0,
+                backgroundColor: 'transparent',
+                borderColor: '#62cc00',
+                borderWidth: 4,
+                pointBackgroundColor: '#62cc00'
+            };
 			var myChart = new Chart(ctx, {
 				type: 'line',
 				data: {
 					labels: ["2.10.2018", "3.10.2018", "4.10.2018", "5.10.2018", "6.10.2018", "9.10.2018", "10.10.2018", "11.10.2018", "12.10.2018", "13.10.2018"],
-					datasets: [{
-						data: [2498.93, 2500.91, 2531.49, 2553.33, 2572.88, 2572.51, 2534.99, 2524.47, 2578.51, 2585.15],
-						lineTension: 0,
-						backgroundColor: 'transparent',
-						borderColor: '#007bff',
-						borderWidth: 4,
-						pointBackgroundColor: '#007bff'
-					}]
+					datasets: [datasetOne]
 				},
 				options: {
 					scales: {
