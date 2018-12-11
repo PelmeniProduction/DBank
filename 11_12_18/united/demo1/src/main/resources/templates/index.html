@@ -57,10 +57,25 @@
 			<input type="text" data-range="true" data-multiple-dates-separator=" - " class="datepicker-here" id="DRP1"/>
 			<br /><br />
 
+			<!--checkbox-->
+			<p>Выберете какие графики вы хотите дополнительно вывести:</p>
+			<div class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input" id="defaultUnchecked" name="defaultExampleCheck">
+				<label class="custom-control-label" for="defaultUnchecked">Фильтр Калмана</label>
+			</div>
+			<div class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input" id="defaultUnchecked2" name="defaultExampleCheck">
+				<label class="custom-control-label" for="defaultUnchecked2">Экспоненциальная скользящая средняя</label>
+			</div>
+			<!-- Default checked -->
+			<div class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input" id="defaultUnchecked3" name="defaultExampleCheck">
+				<label class="custom-control-label" for="defaultUnchecked3">Скользящая средняя</label>
+			</div>
+			<br />
+
 			<!--Кнопки-->
 			<input type="submit" class="btn btn-primary" id="update_data" value="Обновить данные">
-            <input type="submit" class="btn btn-warning" value="Вывести фильтр Калмана">
-            <input type="submit" class="btn btn-success" value="Вывести EMA">
 
 			<!--График-->
 			<div class="row" id="chartOne">
@@ -182,6 +197,14 @@
                 borderColor: '#62cc00',
                 borderWidth: 4,
                 pointBackgroundColor: '#62cc00'
+            };
+            var datasetFour = {
+                data: [2498.93/3, 2500.91/3, 2531.49/3, 2553.33/3, 2572.88/3, 2572.51/3, 2534.99/3, 2524.47/3, 2578.51/3, 2585.15/3],
+                lineTension: 0,
+                backgroundColor: 'transparent',
+                borderColor: '#cc0300',
+                borderWidth: 4,
+                pointBackgroundColor: '#cc0300'
             };
 			var myChart = new Chart(ctx, {
 				type: 'line',

@@ -20,8 +20,8 @@ public class AnalyticService {
     @Autowired
     ConnectionManager connectionManager;
     //вычислим все что вычисляется и кэшируем
-    private volatile List<TimeSeriesData> cachedData = Collections.emptyList();
-    private volatile ArrayList<AnalyzedData> cachedAnalyzedData ;
+    private static volatile List<TimeSeriesData> cachedData = Collections.emptyList();
+    private static volatile ArrayList<AnalyzedData> cachedAnalyzedData ;
     public static ArrayList<Double> arD;
     public static ArrayList<Double> arDSma;
     public static ArrayList<Double> arDEma;
@@ -29,20 +29,17 @@ public class AnalyticService {
     public static ArrayList<Double> arDKalm;
     @Scheduled(fixedDelay = 1000*60*60*24)
     public void reloadData() throws Exception {//кэширует данные за последние полгода
-        reloadDataFromDate(DataCrawler.subtractFromDate(121,new Date()),new Date());
+        //reloadDataFromDate(DataCrawler.subtractFromDate(121,new Date()),new Date());
     }
-    public void makeAnalyzedData(){
+    public static void makeAnalyzedData(){
         for (int i = 0; i < arDSma.size(); i++) {
             AnalyzedData analyzedData = new AnalyzedData(cachedData.get(i).getDate(),cachedData.get(i).getPrice(),
             arDSma.get(i),arDEma.get(i),arDKalm.get(i));
             cachedAnalyzedData.add(i,analyzedData);
         }
     }
-    public void reloadDataFromDate(Date start,Date end)throws Exception{//начало и конец отрезка который выбрал юзер
+    public static void reloadDataFromDate(Connection connection, Statement stmt, Date start,Date end)throws Exception{//начало и конец отрезка который выбрал юзер
         cachedAnalyzedData = new ArrayList<>();//отчистим список
-        connectionManager= new ConnectionManager();
-        Connection connection = connectionManager.getConnection1();
-        Statement stmt=connection.createStatement();
         cachedData= DataBase.getListFromDate(connection,stmt,start,end);//получить из бд список объектов TimeSeriesData
         //вычислять...
         arDSma=arGetSMA((ArrayList)cachedData);
@@ -58,11 +55,14 @@ public class AnalyticService {
         connection.close();
 
     }
-    public List<TimeSeriesData> getCachedData() {
+    public static List<AnalyzedData> getCachedAnalData() {
+        return cachedAnalyzedData;
+    }
+    public static List<TimeSeriesData> getCachedData() {
         return cachedData;
     }
     //получить проустую скользящую среднюю   http://allfi.biz/Forex/TechnicalAnalysis/Trend-Indicators/prostoe-skolzjashhee-srednee.php
-    private ArrayList<Double> arGetSMA(ArrayList<TimeSeriesData> cachedData) {
+    private static ArrayList<Double> arGetSMA(ArrayList<TimeSeriesData> cachedData) {
         ArrayList<Double> arSMA = new ArrayList<Double>();
         int n=cachedData.size();
         int iSmoothIn=4;//интервал сглаживания
@@ -82,7 +82,7 @@ public class AnalyticService {
         return arSMAready;
     }
     //получить экспоненциально взевешенную скользящую среднюю - упрощенный фильтр Калмана
-    private ArrayList<Double> arGetEMA(ArrayList<TimeSeriesData> cachedData){
+    private static ArrayList<Double> arGetEMA(ArrayList<TimeSeriesData> cachedData){
         ArrayList<Double> arEMA = new ArrayList<Double>();
         int n=cachedData.size();
         Double alpha=2/(1+(double)n);
@@ -96,7 +96,7 @@ public class AnalyticService {
     }
     //упрощенный фильтр калмана тоже самое что и скользящее среднее   https://habr.com/post/166693/
     //получить полный фильтр Калмана
-    ArrayList<Double> arGetKalman(ArrayList<TimeSeriesData> cachedData){
+    static ArrayList<Double> arGetKalman(ArrayList<TimeSeriesData> cachedData){
         ArrayList<Double> arKalm = new ArrayList<Double>();
         double dLastError=0;
         for (int i = 0; i < cachedData.size(); i++) {
@@ -113,7 +113,7 @@ public class AnalyticService {
         return arKalm;
     }
     //рассчитать коэффициент Калмана
-    double coeffKalman(double dLastError,int id){
+    static double coeffKalman(double dLastError,int id){
         double iCoeff=0;
         double dVola=arDVol.get(id/20);
         iCoeff=dVola/(dVola+Math.abs(dLastError));//модуль чтобы коэффицинет в космос не улетел
@@ -121,7 +121,7 @@ public class AnalyticService {
         return iCoeff;
     }
     //получить волотильность
-    ArrayList<Double> arGetVol(){
+    static ArrayList<Double> arGetVol(){
         ArrayList<Double> arVol = new ArrayList<>();
         int iDiv=cachedData.size()/20;
         for (int i = 0; i < iDiv; i++) {
@@ -133,7 +133,7 @@ public class AnalyticService {
         return arVol;
     }
     //получить дисперсию
-    double getSqrtDisp20(int iPeriod){
+    static double getSqrtDisp20(int iPeriod){
         double dSqrtDisp=0;
         int n=20;
         //если меньше 20 то добавить оставшийся отрезок
@@ -152,7 +152,7 @@ public class AnalyticService {
         return dSqrtDisp;
     }
     //меньше ли 20 следующий отрезок
-    boolean lastPeriodLess20(int iPeriod){
+    static boolean lastPeriodLess20(int iPeriod){
         boolean b=false;
         if((cachedData.size()-(iPeriod+1)*20)<20)
             b=true;

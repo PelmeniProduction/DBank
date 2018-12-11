@@ -9,14 +9,15 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
     @RequestMapping(value ="/update", method = RequestMethod.POST)//для кнопки обновить данные
-    public ArrayList<TimeSeriesData> update_data(@RequestBody SessionRequest params)
+    public List<AnalyzedData> update_data(@RequestBody SessionRequest params)
     {
         //инициализируем переменную
-        ArrayList<TimeSeriesData> arrTSD = new ArrayList<TimeSeriesData>();
+        List<AnalyzedData> arrTSD = new ArrayList<AnalyzedData>();
         try{
             //Создаём отдельный connection и statement
             ConnectionManager connectionManager = new ConnectionManager();
@@ -27,18 +28,27 @@ public class RestController {
             Date endD = new Date(118,0,1);
             String[] tempStr;
             String delimeter = "-"; // Разделитель
-            tempStr = params.getPeriod().split(delimeter); // Разделение строки params.getPeriod() по тире с помощью метода split()
-            if (tempStr[0].trim().length() != tempStr[1].trim().length())
-            {
+            //проверки есть ли тире и равноколичественны ли части слева и права
+            String str = params.getPeriod();
+            boolean bTest = false, bTest1 = false;
+            for (int i = 0; i < str.length(); i++) {
+                if (str.charAt(i) == '-')
+                    bTest = true;
+            }
+            if (bTest) {
+                tempStr = str.split(delimeter); // Разделение строки params.getPeriod() по тире с помощью метода split()
+                if (tempStr[0].trim().length() == tempStr[1].trim().length()) {//Меняем местами год и день в строке и парсим в тип date
+                    startD = changeFormatForString("\\.", tempStr[0].trim());
+                    endD = changeFormatForString("\\.", tempStr[1].trim());
+                } else {
+                    endD = new Date(118, 5, 1);
+                }
+            } else {
                 endD = new Date(118, 5, 1);
             }
-            else if (tempStr[0].trim().length() == tempStr[1].trim().length()) {
-                //Меняем местами год и день в строке и парсим в тип date
-                startD = changeFormatForString("\\.", tempStr[0].trim());
-                endD = changeFormatForString("\\.", tempStr[1].trim());
-            }
             //Вызываем функцию отдающую list<timeSeriesData>
-            arrTSD = DataBase.getListFromDate(conn, stmt, startD, endD);
+            AnalyticService.reloadDataFromDate(conn, stmt, startD, endD);
+            arrTSD = AnalyticService.getCachedAnalData();
             //Закрываем connection и statmnet
             stmt.close();
             conn.close();
