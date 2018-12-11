@@ -28,9 +28,15 @@ public class RestController {
             String[] tempStr;
             String delimeter = "-"; // Разделитель
             tempStr = params.getPeriod().split(delimeter); // Разделение строки params.getPeriod() по тире с помощью метода split()
-            //Меняем местами год и день в строке и парсим в тип date
-            startD = changeFormatForString("\\.", tempStr[0].trim());
-            endD = changeFormatForString("\\.", tempStr[1].trim());
+            if (tempStr[0].trim().length() != tempStr[1].trim().length())
+            {
+                endD = new Date(118, 5, 1);
+            }
+            else if (tempStr[0].trim().length() == tempStr[1].trim().length()) {
+                //Меняем местами год и день в строке и парсим в тип date
+                startD = changeFormatForString("\\.", tempStr[0].trim());
+                endD = changeFormatForString("\\.", tempStr[1].trim());
+            }
             //Вызываем функцию отдающую list<timeSeriesData>
             arrTSD = DataBase.getListFromDate(conn, stmt, startD, endD);
             //Закрываем connection и statmnet
