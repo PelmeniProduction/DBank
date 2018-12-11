@@ -7,6 +7,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+
+        <link rel="stylesheet" th:href="@{/dp/css/datepicker.min.css}" type="text/css">
 	</head>
 	<body>
 		<!--Меню-->
@@ -47,30 +49,21 @@
 			<select class="form-control">
 				<option>Золото</option>
 				<option>Нефть</option>
-				<option>Биткоин</option>
 			</select>
+
 			<br/>
 			<p>Выберете интересующий вас период времени:</p>
-			<div class="custom-control custom-radio">
-				<input type="radio" class="custom-control-input" id="defaultUnchecked" name="defaultExampleRadios">
-				<label class="custom-control-label" for="defaultUnchecked">За последний год</label>
-			</div>
-			<div class="custom-control custom-radio">
-				<input type="radio" class="custom-control-input" id="defaultUnchecked2" name="defaultExampleRadios">
-				<label class="custom-control-label" for="defaultUnchecked2">За последний месяц</label>
-			</div>
-			<!-- Default checked -->
-			<div class="custom-control custom-radio">
-				<input type="radio" class="custom-control-input" id="defaultChecked" name="defaultExampleRadios" checked>
-				<label class="custom-control-label" for="defaultChecked">За последние 2 недели</label>
-			</div>
-			<br/>
+			<!--Date Range Picker-->
+			<input type="text" data-range="true" data-multiple-dates-separator=" - " class="datepicker-here" id="DRP1"/>
+			<br /><br />
 
-			<!--Кнопка-->
+			<!--Кнопки-->
 			<input type="submit" class="btn btn-primary" id="update_data" value="Обновить данные">
+            <input type="submit" class="btn btn-warning" value="Вывести фильтр Калмана">
+            <input type="submit" class="btn btn-success" value="Вывести EMA">
 
 			<!--График-->
-			<div class="row">
+			<div class="row" id="chartOne">
 				<main role="main" class="col-md-12 ml-sm-auto col-lg-12">
 					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 						<h1 class="h2">Курс золота (руб/гр.)</h1>
@@ -81,7 +74,7 @@
 			<br/>
 
 			<!--Таблица-->
-			<h3>Курс в виде таблицы</h3>
+			<!--<h3>Курс в виде таблицы</h3>
 			<div class="table-responsive">
 				<table class="table table-striped table-hover table-bordered">
 					<thead>
@@ -133,7 +126,7 @@
 					</tr>
 					</tbody>
 				</table>
-			</div>
+			</div>-->
 		</div>
 
 		<br/>
@@ -158,23 +151,43 @@
 		<script th:src="@{/js/jquery-3.3.1.js}"></script>
 		<!--Script - обработчик событий для кнопок-->
 		<script th:src="@{/js/index.js}"></script>
+		<!--script for Date range picker-->
+        <script th:src="@{/dp/js/datepicker.min.js}"></script>
+
 
 		<!-- Graphs -->
 		<script th:src="@{/graph/Chart.min.js}"></script>
 		<script>
 			var ctx = document.getElementById("myChart");
+			var datasetOne ={
+                data: [2498.93, 2500.91, 2531.49, 2553.33, 2572.88, 2572.51, 2534.99, 2524.47, 2578.51, 2585.15],
+                lineTension: 0,
+                backgroundColor: 'transparent',
+                borderColor: '#007bff',
+                borderWidth: 4,
+                pointBackgroundColor: '#007bff'
+            };
+            var datasetTwo = {
+                data: [2498.93*2, 2500.91*2, 2531.49*2, 2553.33*2, 2572.88*2, 2572.51*2, 2534.99*2, 2524.47*2, 2578.51*2, 2585.15*2],
+                lineTension: 0,
+                backgroundColor: 'transparent',
+                borderColor: '#ffc300',
+                borderWidth: 4,
+                pointBackgroundColor: '#ffc300'
+            };
+            var datasetThree = {
+                data: [2498.93/2, 2500.91/2, 2531.49/2, 2553.33/2, 2572.88/2, 2572.51/2, 2534.99/2, 2524.47/2, 2578.51/2, 2585.15/2],
+                lineTension: 0,
+                backgroundColor: 'transparent',
+                borderColor: '#62cc00',
+                borderWidth: 4,
+                pointBackgroundColor: '#62cc00'
+            };
 			var myChart = new Chart(ctx, {
 				type: 'line',
 				data: {
 					labels: ["2.10.2018", "3.10.2018", "4.10.2018", "5.10.2018", "6.10.2018", "9.10.2018", "10.10.2018", "11.10.2018", "12.10.2018", "13.10.2018"],
-					datasets: [{
-						data: [2498.93, 2500.91, 2531.49, 2553.33, 2572.88, 2572.51, 2534.99, 2524.47, 2578.51, 2585.15],
-						lineTension: 0,
-						backgroundColor: 'transparent',
-						borderColor: '#007bff',
-						borderWidth: 4,
-						pointBackgroundColor: '#007bff'
-					}]
+					datasets: [datasetOne]
 				},
 				options: {
 					scales: {
