@@ -7,8 +7,15 @@ function init() {
     var Update = document.getElementById(UPDATE_BUTTON);
     //обрабатываем клики на них
     Update.addEventListener("click", function (e) {
-        getData();
-        //document.location.href = 'http://localhost:8080/update';
+        if($('#DRP1').val() === "")
+        {
+            alert("Выберите период времени!");
+        }
+        else
+        {
+            getData();
+            //document.location.href = 'http://localhost:8080/update';
+        }
     });
 }
 
